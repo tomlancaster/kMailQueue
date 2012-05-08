@@ -92,6 +92,10 @@ class Kohana_MailQueue
 		$stats = array('sent' => 0, 'failed' => 0);
 		
 		$emails = Model_MailQueue::find_batch($config->batch_size);
+		if ( ! class_exists('Kohana_Postmark'))
+		 {
+			require Kohana::find_file('classes', 'kohana/postmark');
+		 }
 		foreach($emails as $email)
 		{
 			$postmark = Kohana_Postmark::compose();
