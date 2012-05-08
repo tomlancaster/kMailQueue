@@ -77,4 +77,42 @@ class Kohana_MailQueue
 		
 		return $stats;
 	}
+	
+	public static function batch_send_postmark()
+	{
+		if(version_compare(kohana::VERSION, '3.2.0', '>='))
+		{
+			$config = kohana::$config->load('mailqueue');
+		}
+		else
+		{
+			$config = kohana::config('mailqueue');
+		}
+		
+		$stats = array('sent' => 0, 'failed' => 0);
+		
+		$emails = Model_MailQueue::find_batch($config->batch_size);
+		foreach($emails as $email)
+		{
+			$postmark = Kohana_Postmark::compose();
+			$postmark->addTo($email->recipient_email, $email->recipient_name);
+			$postmark->from($email->sender_email, $email->sender_name);
+			$postmark->messageHTML($email->body->body);
+			
+			
+			
+			if($postmark->send())
+			{
+				$email->sent();
+				$stats['sent'] ++;
+			}
+			else
+			{
+				$stats['failed'] ++;
+				$email->failed();
+			}
+		}
+		
+		return $stats;
+	}
 }
