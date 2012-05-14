@@ -101,6 +101,7 @@ class Kohana_MailQueue
 			$postmark = Kohana_Postmark::compose();
 			$postmark->addTo($email->recipient_email, $email->recipient_name);
 			$postmark->from($email->sender_email, $email->sender_name);
+			$postmark->subject($email->subject);
 			$postmark->messageHTML($email->body->body);
 			
 			

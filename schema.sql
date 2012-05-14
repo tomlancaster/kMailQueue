@@ -17,7 +17,7 @@ CREATE TABLE `mailqueue` (
   `failed` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `state` (`state`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=innodb DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -30,5 +30,5 @@ CREATE TABLE `mailqueue_bodies` (
   `queue_id` int(10) unsigned NOT NULL,
   `body` text NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `queue_id` (`queue_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+  FOREIGN KEY `queue_id` (`queue_id`) REFERENCES mailqueue(id) on delete cascade
+) ENGINE=innodb  DEFAULT CHARSET=utf8;

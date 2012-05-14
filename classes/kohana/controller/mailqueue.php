@@ -23,7 +23,8 @@ class Kohana_Controller_MailQueue extends Controller
 		{
 			$config = kohana::config('mailqueue');
 		}
-		
+		Log::instance()->add(Log::NOTICE, print_r($config,true));
+		Log::instance()->add(Log::NOTICE, sprintf('ip: %s', Request::$client_ip));
 		// Check they're from an allowed IP;
 		$allowed_ips 	= $config->allowed_ips;
 		$passphrase 	= $this->request->param('id');
@@ -42,7 +43,7 @@ class Kohana_Controller_MailQueue extends Controller
 		}
 		else
 		{
-			$stats = MailQueue::batch_send();
+			$stats = MailQueue::batch_send_postmark();
 			
 			if(version_compare(kohana::VERSION, '3.1', '>='))
 			{
