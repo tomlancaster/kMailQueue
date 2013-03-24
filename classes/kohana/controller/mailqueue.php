@@ -23,8 +23,6 @@ class Kohana_Controller_MailQueue extends Controller
 		{
 			$config = kohana::config('mailqueue');
 		}
-		Log::instance()->add(Log::NOTICE, print_r($config,true));
-		Log::instance()->add(Log::NOTICE, sprintf('ip: %s', Request::$client_ip));
 		// Check they're from an allowed IP;
 		$allowed_ips 	= $config->allowed_ips;
 		$passphrase 	= $this->request->param('id');
