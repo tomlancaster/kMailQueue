@@ -105,18 +105,23 @@ class Kohana_MailQueue
 			$postmark->messageHTML($email->body->body);
 			
 			
-			
-			if($postmark->send())
-			{
-				$email->sent();
-				$stats['sent'] ++;
-			}
-			else
-			{
-				$stats['failed'] ++;
-				$email->failed();
-			}
-		}
+		  try {	
+		  	if($postmark->send())
+			  {
+				  $email->sent();
+				  $stats['sent'] ++;
+			  }
+			  else
+			  {
+			  	$stats['failed'] ++;
+				  $email->failed();
+        }
+       } catch (Exception $e) 
+       {
+         $stats['failed'] ++;
+         $email->failed();
+       }
+		 }
 		
 		return $stats;
 	}
