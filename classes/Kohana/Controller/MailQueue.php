@@ -8,24 +8,18 @@
  * @author 		Alex Gisby <alex@example.com>
  */
 
-class Kohana_Controller_MailQueue extends Controller
-{
+class Kohana_Controller_MailQueue extends Controller {
 	/**
 	 * The action your CRON should be looking at
 	 */
 	public function action_batch()
 	{
-		if(version_compare(kohana::VERSION, '3.2.0', '>='))
-		{
-			$config = kohana::$config->load('mailqueue');
-		}
-		else
-		{
-			$config = kohana::config('mailqueue');
-		}
+		$config = Kohana::$config->load('mailqueue');
+		
 		// Check they're from an allowed IP;
 		$allowed_ips 	= $config->allowed_ips;
 		$passphrase 	= $this->request->param('id');
+		
 		if(($config->passphrase != null && $passphrase != $config->passphrase) || (!empty($allowed_ips) && !in_array(Request::$client_ip, $allowed_ips)))
 		{
 			if(version_compare(kohana::VERSION, '3.1', '>='))

@@ -182,7 +182,7 @@ class Kohana_Model_MailQueue extends ORM
 	{
 		$this->attempts ++;
 		
-		if(kohana::config('mailqueue.max_attempts') <= $this->attempts)
+		if (Kohana::$config->load('mailqueue.max_attempts') <= $this->attempts)
 		{
 			$this->state 	= 'failed';
 			$this->failed	= date('Y-m-d H:i:s', time());

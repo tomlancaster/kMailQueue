@@ -33,15 +33,7 @@ class Kohana_MailQueue
 	 */
 	public static function batch_send()
 	{
-		if(version_compare(kohana::VERSION, '3.2.0', '>='))
-		{
-			$config = kohana::$config->load('mailqueue');
-		}
-		else
-		{
-			$config = kohana::config('mailqueue');
-		}
-		
+		$config = Kohana::$config->load('mailqueue');		
 		$stats = array('sent' => 0, 'failed' => 0);
 		
 		$emails = Model_MailQueue::find_batch($config->batch_size);
@@ -80,18 +72,10 @@ class Kohana_MailQueue
 	
 	public static function batch_send_postmark()
 	{
-		if(version_compare(kohana::VERSION, '3.2.0', '>='))
-		{
-			$config = kohana::$config->load('mailqueue');
-		}
-		else
-		{
-			$config = kohana::config('mailqueue');
-		}
-		
+		$config = kohana::$config->load('mailqueue');
 		$stats = array('sent' => 0, 'failed' => 0);
-		
 		$emails = Model_MailQueue::find_batch($config->batch_size);
+		
 		if ( ! class_exists('Kohana_Postmark'))
 		 {
 			require Kohana::find_file('classes', 'kohana/postmark');
